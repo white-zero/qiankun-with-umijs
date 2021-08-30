@@ -1,12 +1,13 @@
-import React from 'react';
+import React,{useRef} from 'react';
 import { useRequest, request, Link } from 'umi';
+import { Table,Button } from 'antd';
 import {Father} from './father';
 import {Son1} from './sonone';
 import {Son2} from './sontwo';
-import { Table } from 'antd';
+import FormSearch from '@/components/BaseTableSearch'
 
 export default () => {
-
+  const testRef = useRef()
   const { data = [] } = useRequest(() => request('/api/shop/list'));
 
   const columns = [
@@ -16,7 +17,7 @@ export default () => {
     },
     {
       dataIndex: 'name',
-      title: '名称',
+      title: '名称---',
     },
     {
       // dataIndex: 'address',
@@ -37,9 +38,17 @@ export default () => {
 
   return (
     <div>
+      wwww
       <h1 style={{ marginBottom: 24 }}>商品列表</h1>
+      <Button onClick={()=>console.log(testRef,'testRef::')}>父组件拿子组件的值</Button>
+      <FormSearch ref={testRef}/>
+      {/* <Table rowKey="id" columns={columns} dataSource={data} /> */}
 
-      <Table rowKey="id" columns={columns} dataSource={data} />
+      {/* useContext与useReducer的使用 */}
+      <Father>
+          <Son1/>
+          <Son2/>
+      </Father>
     </div>
   );
 }
