@@ -1,9 +1,9 @@
-import React,{useRef} from 'react';
+import React, { useRef } from 'react';
 import { useRequest, request, Link } from 'umi';
-import { Table,Button } from 'antd';
-import {Father} from './father';
-import {Son1} from './sonone';
-import {Son2} from './sontwo';
+import { Table, Button, Divider } from 'antd';
+import { Father } from './father';
+import { Son1 } from './sonone';
+import { Son2 } from './sontwo';
 import FormSearch from '@/components/BaseTableSearch'
 
 export default () => {
@@ -21,9 +21,9 @@ export default () => {
     },
     {
       // dataIndex: 'address',
-      dataIndex:'----',
+      dataIndex: '----',
       title: '地址',
-      render: ()=>(
+      render: () => (
         <Link to={`/test`}>地址</Link>
       )
     },
@@ -38,16 +38,25 @@ export default () => {
 
   return (
     <div>
-      wwww
-      <h1 style={{ marginBottom: 24 }}>商品列表</h1>
-      <Button onClick={()=>console.log(testRef,'testRef::')}>父组件拿子组件的值</Button>
-      <FormSearch ref={testRef}/>
+      <div>
+        <label>一、</label><span>useImperativeHandle +++ useRef的使用</span>
+        <br /><span>(从当前组件调用子组件暴露出来的方法、获取值)</span>
+        <Button onClick={() => console.log(testRef, 'testRef::')}>父组件拿子组件的值</Button>
+      </div>
+      <div style={{ border: "1px solid" }}>
+        <span>
+          这里是子组件:
+        </span>
+        <FormSearch ref={testRef} />
+      </div>
+      <Divider />
+
       {/* <Table rowKey="id" columns={columns} dataSource={data} /> */}
 
       {/* useContext与useReducer的使用 */}
       <Father>
-          <Son1/>
-          <Son2/>
+        <Son1 />
+        <Son2 />
       </Father>
     </div>
   );

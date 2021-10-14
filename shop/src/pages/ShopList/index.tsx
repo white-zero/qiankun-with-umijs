@@ -5,7 +5,7 @@ import {Son1} from './sonone';
 import {Son2} from './sontwo';
 import { Table } from 'antd';
 
-export default () => {
+const  IndexPage: React.FC<any> = () => {
 
   const { data = [] } = useRequest(() => request('/api/shop/list'));
 
@@ -43,3 +43,4 @@ export default () => {
     </div>
   );
 }
+export default IndexPage;

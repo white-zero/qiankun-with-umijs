@@ -9,7 +9,7 @@ export default defineConfig({
     slave: {}
   },
   routes: [
-    { path: '/', component: '@/pages/userList' },
-    { path: '/:userId', component: '@/pages/userDetail' },
+    { path: '/', component: '@/pages/UserList' },
+    { path: '/:userId', component: '@/pages/UserDetail' },
   ],
 });
