@@ -1,13 +1,14 @@
 import React, { useRef } from 'react';
 import { useRequest, request, Link } from 'umi';
-import { Table, Button, Divider } from 'antd';
+import { Table, Button, Divider,Input } from 'antd';
 import { Father } from './father';
 import { Son1 } from './sonone';
 import { Son2 } from './sontwo';
+import { SearchTableProps } from '@/components/BaseTableSearch/bean';
 import FormSearch from '@/components/BaseTableSearch'
 
 export default () => {
-  const testRef = useRef()
+  const testRef = useRef<any>()
   const { data = [] } = useRequest(() => request('/api/shop/list'));
 
   const columns = [
@@ -35,19 +36,38 @@ export default () => {
       )
     },
   ];
-
+  const searchFieldsList:SearchTableProps.FormItemObj[] = [
+    {
+      label: '资产来源',
+      modelName: `fundSource`,
+      dom: <Input />
+    },
+    {
+      label: '资产来源',
+      modelName: `fundSourceB`,
+      dom: <Input />
+    },
+    {
+      label: '资产来源',
+      modelName: `fundSourceC`,
+      dom: <Input />
+    }  
+  ]
   return (
     <div>
       <div>
         <label>一、</label><span>useImperativeHandle +++ useRef的使用</span>
         <br /><span>(从当前组件调用子组件暴露出来的方法、获取值)</span>
-        <Button onClick={() => console.log(testRef, 'testRef::')}>父组件拿子组件的值</Button>
+        {/* <Button onClick={() => console.log(testRef, 'testRef::')}>父组件拿子组件的值</Button> */}
       </div>
       <div style={{ border: "1px solid" }}>
         <span>
           这里是子组件:
         </span>
-        <FormSearch ref={testRef} />
+        <FormSearch 
+          ref={testRef} 
+          searchFieldsList={searchFieldsList}
+        />
       </div>
       <Divider />
 

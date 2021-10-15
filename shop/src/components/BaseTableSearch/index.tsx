@@ -10,12 +10,22 @@ interface Props  {
   defaultValue?: any,
   paginations?: boolean;
   newSearchField?: string;
+  searchFieldsList?:any;
+  hideSearch?:any;
+  noSearchBorder?:any;
+  noTableBorder?:any;
 }
 
-const BaseFormSearch = (props: { hideSearch?: any; noSearchBorder?: any; noTableBorder?: any; }, ref: any) => {
-  const baseProps = {}
-  // const searchDom = <BaseSearch {...baseProps} />;
-  const searchDom = <>111</>;
+const BaseFormSearch =(props,ref) => {
+  console.log(props.searchFieldsList,'props???:::');
+
+  const baseProps = {
+    ...props,
+  }
+  console.log(props,'props???:::');
+  
+  const searchDom = <BaseSearch {...baseProps} />;
+  // const searchDom = <>111</>;
   const tableDom = (<>222</>)
   useImperativeHandle(ref,()=>({
     testFun:()=>{
@@ -47,5 +57,11 @@ const BaseFormSearch = (props: { hideSearch?: any; noSearchBorder?: any; noTable
     </div>
   );
 };
-const FormSearch = React.forwardRef(BaseFormSearch)
+export interface IFormSearchRef {
+  querys: any;
+  reload: () => void;
+  total: number;
+  // form: WrappedFormUtils;
+}
+const FormSearch = React.forwardRef< IFormSearchRef,Props>(BaseFormSearch)
 export default FormSearch;
