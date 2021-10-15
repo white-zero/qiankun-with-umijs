@@ -13,7 +13,7 @@ export const layout = {
         path: '/user'
       },
       {
-        name: '商铺管理B',
+        name: '父组件取值&&useContext+useReducer',
         path: '/shop/ShopManageB'
       }
     ]

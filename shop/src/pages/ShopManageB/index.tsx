@@ -52,7 +52,9 @@ export default () => {
       <Divider />
 
       {/* <Table rowKey="id" columns={columns} dataSource={data} /> */}
-
+      <div>
+        <label>二、</label><span>useContext与useReducer的使用==redux的效果（在父组件存储数据）</span>
+      </div>
       {/* useContext与useReducer的使用 */}
       <Father>
         <Son1 />

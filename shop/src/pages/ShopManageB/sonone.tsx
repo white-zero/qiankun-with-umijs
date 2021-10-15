@@ -9,7 +9,7 @@ export const Son1 =()=>{
           这里是子组件1
             <p style={{color:colorValue}}>text:{colorValue}</p>
             {/* 因为type是“son1”，所以传的值是colorValue,testValue不会传递 */}
-            <button onClick={()=>{dispatch({type:'son1',colorValue:"给son2的值:22222",testValue:"给son2的值:1111111",})}}>给son2传值</button>&nbsp;
+            <button onClick={()=>{dispatch({type:'son2',colorValue:"给son2的值:22222",testValue:"给son2的值:1111111",})}}>给son2传值</button>&nbsp;
           
             <button onClick={()=>{dispatch({type:'son1',colorValue:"我自己修改我自己的值:66666"})}}>我修改自己的值</button>&nbsp;
         </div>
