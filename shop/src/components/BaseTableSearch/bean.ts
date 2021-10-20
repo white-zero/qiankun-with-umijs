@@ -11,11 +11,11 @@ export namespace SearchTableProps {
     name: string;
     value: string;
   }
-  export interface DomConfig {
-    type?: 'select';
-    selectLists?: Selectlists[];
-    domProps?: any;
-  }
+    export interface DomConfig {
+      type?: 'select';
+      selectLists?: Selectlists[];
+      domProps?: any;
+    }
 
   export interface SearchProps extends BaseSearch {
     loading?: boolean | SpinProps;
@@ -48,6 +48,10 @@ export namespace SearchTableProps {
     colspan?: ColProps;
     options?: any;
     ruleType?: number;
+    type?:any;
+    key?:string;
+    placeholder?:string;
+    option?:any[];
   }
   interface AdvancedSearchProps {
     show?: boolean;

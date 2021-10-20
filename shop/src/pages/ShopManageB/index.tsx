@@ -1,11 +1,12 @@
 import React, { useRef } from 'react';
 import { useRequest, request, Link } from 'umi';
-import { Table, Button, Divider,Input } from 'antd';
+import { Table, Button, Divider, Input } from 'antd';
 import { Father } from './father';
 import { Son1 } from './sonone';
 import { Son2 } from './sontwo';
 import { SearchTableProps } from '@/components/BaseTableSearch/bean';
 import FormSearch from '@/components/BaseTableSearch'
+import { RuleEnum } from '@/utils/type';
 
 export default () => {
   const testRef = useRef<any>()
@@ -36,22 +37,31 @@ export default () => {
       )
     },
   ];
-  const searchFieldsList:SearchTableProps.FormItemObj[] = [
+  const searchFieldsList: SearchTableProps.FormItemObj[] = [
     {
       label: '资产来源',
       modelName: `fundSource`,
       dom: <Input />
     },
     {
-      label: '资产来源',
+      label: '新旧车',
       modelName: `fundSourceB`,
-      dom: <Input />
+      domConfig:{
+        type: 'select',
+        selectLists:[
+          { value: '1', name: '新车' },
+          { value: '0', name: '二手车'}
+        ],
+        domProps:{
+          placeholder: '请选择新旧车',
+        }
+      }      
     },
     {
-      label: '资产来源',
+      label: '手机号',
       modelName: `fundSourceC`,
-      dom: <Input />
-    }  
+      ruleType: RuleEnum.手机号
+    }
   ]
   return (
     <div>
@@ -64,8 +74,13 @@ export default () => {
         <span>
           这里是子组件:
         </span>
-        <FormSearch 
-          ref={testRef} 
+        <div>
+          <span>
+            一个带搜索的table:
+        </span>
+        </div>
+        <FormSearch
+          ref={testRef}
           searchFieldsList={searchFieldsList}
         />
       </div>

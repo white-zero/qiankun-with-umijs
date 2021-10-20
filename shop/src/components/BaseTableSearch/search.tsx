@@ -9,23 +9,53 @@ import {
   Col,
   Select,
 } from 'antd';
+import { InputProps } from 'antd/lib/input';
 import { StarOutlined, StarFilled, StarTwoTone } from '@ant-design/icons';
-
+import { RuleEnum } from '@/utils/type'
+import { SpinProps } from 'antd/lib/spin';
 import { SearchTableProps } from './bean';
 
 interface Props {
   showAdvance?: boolean;
   setShowAdvance?: Function;
+  handleSearch: Function;
   newSearchField?: string;
   advancedSearchProps?: any
   searchFieldsList?: any
   form?: any
+  storageProps?: any
+  loading?: boolean | SpinProps;
 }
-
+const { Option } = Select;
 const BaseSearch: React.FC<Props> = (props) => {
+  const [form] = Form.useForm();
+  const {loading} = props
   const submit = () => {
-    console.log(11);
+    // e.preventDefault();
+    const values = form.getFieldsValue();
+    const searchParams = { ...values, page: 0 };
+    console.log(searchParams,'searchParams::');
+    props.handleSearch(searchParams);
+    form.setFieldsValue({ page: 0 });
+    setStorage(searchParams);
   }
+  const reset = ()=>{
+      clearStorage();
+      form.resetFields();
+      const values = form.getFieldsValue();
+      const { page, size } = values;
+      props.handleSearch!({ size, page: 0 });
+  }
+  const setStorage = (searchParams:any)=>{
+    if (props.storageProps) {
+      props.storageProps.setStorage(searchParams);
+    }
+  }
+  const clearStorage = () => {
+    if (props.storageProps) {
+      props.storageProps.clearStorage!();
+    }
+  };
   const colspan = {
     xs: 24,
     sm: 12,
@@ -50,33 +80,32 @@ const BaseSearch: React.FC<Props> = (props) => {
             allowClear={true}
             {...domConfig.domProps}
           >
-            {/* {selectLists &&
+            {selectLists &&
               selectLists.map((item, index) => (
                 <Option key={index} value={item.value}>
                   {item.name}
                 </Option>
-              ))} */}
-              111
+              ))}
           </Select>
         );
-      // default: {
-      //   const inputProps = {} as InputProps;
-      //   switch (ruleType) {
-      //     case RuleEnum.手机号: {
-      //       inputProps.maxLength = 11;
-      //       break;
-      //     }
-      //     case RuleEnum.身份证号: {
-      //       inputProps.maxLength = 18;
-      //       break;
-      //     }
-      //     default:
-      //       break;
-      //   }
-      //   return (
-      //     <Input placeholder="请输入" {...inputProps} {...domConfig.domProps} />
-      //   );
-      // }
+      default: {
+        const inputProps = {} as InputProps;
+        switch (ruleType) {
+          case RuleEnum.手机号: {
+            inputProps.maxLength = 11;
+            break;
+          }
+          case RuleEnum.身份证号: {
+            inputProps.maxLength = 18;
+            break;
+          }
+          default:
+            break;
+        }
+        return (
+          <Input placeholder="请输入" {...inputProps} {...domConfig.domProps} />
+        );
+      }
     }
   };
 
@@ -94,18 +123,13 @@ const BaseSearch: React.FC<Props> = (props) => {
     return (
       <Col {...col} key={`${index}`} className={styles.colstyle}>
         <Form.Item label={label} wrapperCol={{ span: 8 }} required={required} name={modelName} initialValue={options && options.initialValue}>
-          {/* {getFieldDecorator(modelName, {
-            ...options,
-            initialValue:
-              (options && options.initialValue)
-          })(dom ? dom : getFormItem(domConfig, ruleType))} */}
           {dom?dom:getFormItem(domConfig, ruleType)}
         </Form.Item>
       </Col>
     );
   };
   return (
-    <Form onFinish={submit} className={styles.formSty}>
+    <Form onFinish={submit} form={form} className={styles.formSty}>
       <Row gutter={32}>
         {console.log(searchFieldsList,'searchFieldsList:::?')}
         {!show || showAdvance
@@ -137,12 +161,12 @@ const BaseSearch: React.FC<Props> = (props) => {
             type="primary"
             style={{ marginRight: 8 }}
             htmlType="submit"
-            // loading={}
+            loading={loading}
           >
             查询
             </Button>
-          <Button type="default" onClick={() => { }}
-            // loading={}
+          <Button type="default" onClick={reset}
+            loading={loading}
           >
             重置
             </Button>
