@@ -3,6 +3,9 @@ import styles from './index.less';
 import BaseSearch from './search';
 import { getRender } from './RenderParams';
 import {Card} from 'antd';
+import SearchTable from './table';
+import { ColumnProps } from 'antd/lib/table';
+import ColumnSelection from './ColumnSelection';
 import _ from 'lodash';
 
 interface Props  {
@@ -17,6 +20,8 @@ interface Props  {
   hideSearch?:any;
   noSearchBorder?:any;
   noTableBorder?:any;
+  needColumnsSelection?:boolean;
+  columns?:any;
 }
 const storageName = 'searchParams';
 const getParamsStorage = () => {
@@ -35,6 +40,7 @@ const BaseFormSearch =(props,ref) => {
   const [querys, setQuerys] = useState<any>({});
   const [total, setTotal] = useState(0);
   const [dataList, setDataList] = useState([] as any[]);
+  const [activeColumns, setActiveColumns] = useState([] as ColumnProps<any>[]);
 
 
   const handleSearch = async (values: any) => {
@@ -82,8 +88,66 @@ const BaseFormSearch =(props,ref) => {
     },
   }
   const searchDom = <BaseSearch {...baseProps} />;
-  // const searchDom = <>111</>;
-  const tableDom = (<>222</>)
+  const getExtends = () => {
+    if (props.extendBetween) {
+      if (typeof props.extendBetween === 'function') {
+        const values = props.form.getFieldsValue();
+        console.log(values,'values');
+        const params = getRender(values, props.searchParamsRender);
+        return (
+          <div style={{ width: '100%' }}>{props.extendBetween(params)}</div>
+        );
+      }
+      return <div style={{ width: '100%' }}>{props.extendBetween}</div>;
+    }
+    return '';
+  };
+  const tableDom = (
+    <div style={{ clear: 'both' }}>
+      <div style={{ marginBottom: 16 }} className={styles.extendsItem}>
+        {getExtends()}
+        {props.needColumnsSelection && (
+          <ColumnSelection
+            columns={props.columns || []}
+            setSelectColKeys={keys => {
+              const cols = _.cloneDeep(props.columns);
+              if (cols) {
+                if (props.columnsSelection && props.columnsSelection.treeSelectColumns) {
+                  const columns: any[] = [];
+                  cols.map(item => {
+                    const col = _.cloneDeep(item);
+                    if (item.children) {
+                      col.children = [];
+                      item.children.map((i) => {
+                        if (keys.indexOf(i.dataIndex!) > -1) {
+                          col.children.push(i);
+                        }
+                      })
+                    }
+                    if (col.children && col.children.length) {
+                      columns.push(col);
+                    }
+                  });
+                  setActiveColumns(columns);
+                } else {
+                  const columns = cols.filter(item => {
+                    return keys.indexOf(item.dataIndex!) > -1;
+                  });
+                  setActiveColumns(columns);
+                }
+              }
+            }}
+            {...props.columnsSelection}
+          />
+        )}
+      </div>
+      <SearchTable
+        dataSource={dataList}
+        {...baseProps}
+        columns={activeColumns}
+      />
+    </div>
+  )
   useImperativeHandle(ref,()=>({
     testFun:()=>{
       console.log('子组件的方法');
@@ -98,7 +162,7 @@ const BaseFormSearch =(props,ref) => {
     <div className={styles.tableSearchWrapper}>
       {props.hideSearch ? (
         <div style={{ display: 'none' }}>{searchDom}</div>
-      ) : !props.noSearchBorder ? (
+      ) : props.noSearchBorder ? (
         <Card
           bordered={false}
           bodyStyle={{ padding: '12px 16px 2px' }}

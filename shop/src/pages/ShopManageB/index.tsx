@@ -22,15 +22,14 @@ export default () => {
       title: '名称---',
     },
     {
-      // dataIndex: 'address',
-      dataIndex: '----',
+      dataIndex: 'address',
       title: '地址',
       render: () => (
         <Link to={`/test`}>地址</Link>
       )
     },
     {
-      dataIndex: 'id',
+      dataIndex: 'operate',
       title: '操作',
       render: (id: string) => (
         <Link to={`/shopDetail/${id}`}>详情</Link>
@@ -82,6 +81,8 @@ export default () => {
         <FormSearch
           ref={testRef}
           searchFieldsList={searchFieldsList}
+          needColumnsSelection
+          columns={columns}
         />
       </div>
       <Divider />

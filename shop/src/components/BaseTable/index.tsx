@@ -27,21 +27,7 @@ const BaseTable: React.FC<BaseTableProps> = (props, ref) => {
   const [tableHead, setTableHead] = useState(0);
 
   const columns: ColumnProps<any>[] = _.cloneDeep(props.columns) || [];
-  // if (columns.length && columns[0].title !== '序号') {
-  //   const pagination: any = props.pagination;
-  //   let startIndex = 0;
-  //   if (pagination && pagination.current && pagination.pageSize) {
-  //     startIndex = (pagination.current - 1) * pagination.pageSize;
-  //   }
-  //   if (!props.noNo) {
-  //     columns.unshift({
-  //       title: '序号',
-  //       dataIndex: 'index',
-  //       render: (val, row, index) => startIndex + (index + 1),
-  //       width: 50
-  //     });
-  //   }
-  // }
+  
   const initColumns = (list) => {
     list.forEach((item, index) => {
       if (!item.align) {
