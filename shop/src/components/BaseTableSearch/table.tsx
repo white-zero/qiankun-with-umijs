@@ -50,7 +50,7 @@ const SearchTable: React.FC<Props> = props => {
       showQuickJumper: true,
       pageSize: pagesize,
       showTotal: (t, range) =>
-        `共${t}条数据 第${page + 1}页 / 共${Math.ceil(total / pagesize)}页`,
+        `共${t}条数据 第${page + 1}页 / 共${Math.ceil(t / pagesize)}页`,
       onChange: onPageChange,
       onShowSizeChange: onShowSizeChange
     };

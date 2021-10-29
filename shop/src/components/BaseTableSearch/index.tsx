@@ -2,13 +2,13 @@ import React, { useState, useEffect, useImperativeHandle } from 'react';
 import styles from './index.less';
 import BaseSearch from './search';
 import { getRender } from './RenderParams';
-import {Card} from 'antd';
+import { Card,Form } from 'antd';
 import SearchTable from './table';
 import { ColumnProps } from 'antd/lib/table';
 import ColumnSelection from './ColumnSelection';
 import _ from 'lodash';
 
-interface Props  {
+interface Props {
   wrappedComponentRef?: any;
   total?: number;
   showSizeChanger?: boolean;
@@ -16,12 +16,14 @@ interface Props  {
   defaultValue?: any,
   paginations?: boolean;
   newSearchField?: string;
-  searchFieldsList?:any;
-  hideSearch?:any;
-  noSearchBorder?:any;
-  noTableBorder?:any;
-  needColumnsSelection?:boolean;
-  columns?:any;
+  searchFieldsList?: any;
+  hideSearch?: any;
+  noSearchBorder?: any;
+  noTableBorder?: any;
+  needColumnsSelection?: boolean;
+  columns?: any;
+  dataSource?: any;
+  form?: any;
 }
 const storageName = 'searchParams';
 const getParamsStorage = () => {
@@ -35,20 +37,24 @@ const setParamsStorage = (searchParams: any) => {
 const clearParamsStorage = () => {
   sessionStorage.removeItem(storageName);
 };
-const BaseFormSearch =(props,ref) => {
+const BaseFormSearch = (props, ref) => {
+  const [form] = Form.useForm()
+  const defaultSize = props.defaultSize || 20;
   const [loading, setLoading] = useState(false);
   const [querys, setQuerys] = useState<any>({});
   const [total, setTotal] = useState(0);
   const [dataList, setDataList] = useState([] as any[]);
   const [activeColumns, setActiveColumns] = useState([] as ColumnProps<any>[]);
 
-
+  useEffect(() => {
+    setTotal(props.total ?? 0);    
+  }, [props.total]);
   const handleSearch = async (values: any) => {
     setLoading(true);
     const params = getRender(values, props.searchParamsRender);
     setQuerys(params);
     if (props.dataSourceFunc) {
-      console.log(params,'paramstest')
+      console.log(params, 'paramstest')
       const res = await props.dataSourceFunc(params);
       const { data, success } = res;
       if (success && data && data instanceof Array) {
@@ -86,13 +92,18 @@ const BaseFormSearch =(props,ref) => {
       clearStorage,
       getStorage
     },
+    paginationProps: (props.paginations || props.paginations === undefined) ? {
+      total,
+      size: defaultSize,
+      page: form.getFieldValue('page') || 0,
+    } : false,
   }
   const searchDom = <BaseSearch {...baseProps} />;
   const getExtends = () => {
     if (props.extendBetween) {
       if (typeof props.extendBetween === 'function') {
         const values = props.form.getFieldsValue();
-        console.log(values,'values');
+        console.log(values, 'values');
         const params = getRender(values, props.searchParamsRender);
         return (
           <div style={{ width: '100%' }}>{props.extendBetween(params)}</div>
@@ -142,17 +153,28 @@ const BaseFormSearch =(props,ref) => {
         )}
       </div>
       <SearchTable
+        form={form}
         dataSource={dataList}
         {...baseProps}
         columns={activeColumns}
       />
     </div>
   )
-  useImperativeHandle(ref,()=>({
-    testFun:()=>{
-      console.log('子组件的方法');
-    }
-  }),[])
+  const testFun = () => {
+    console.log('子组件的方法');
+
+  }
+  const reload = (extendsParams = {}) => {
+    const values = props.form.getFieldsValue();
+    handleSearch({ ...values, ...extendsParams });
+  };
+  useImperativeHandle(ref, () => ({
+    testFun,
+    querys,
+    reload,
+    total,
+    form: props.form
+  }), [querys, total])
   useEffect(() => {
     if (_.isBoolean(props.loading)) {
       setLoading(props.loading);
@@ -189,5 +211,5 @@ export interface IFormSearchRef {
   total: number;
   // form: WrappedFormUtils;
 }
-const FormSearch = React.forwardRef< IFormSearchRef,Props>(BaseFormSearch)
+const FormSearch = React.forwardRef<IFormSearchRef, Props>(BaseFormSearch)
 export default FormSearch;
