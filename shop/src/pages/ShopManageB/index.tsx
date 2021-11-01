@@ -6,6 +6,7 @@ import { Son1 } from './sonone';
 import { Son2 } from './sontwo';
 import { SearchTableProps } from '@/components/BaseTableSearch/bean';
 import FormSearch from '@/components/BaseTableSearch'
+import AsyncDataSelect from '@/components/BaseSelect/AsyncDataSelect'
 import { RuleEnum } from '@/utils/type';
 
 export default () => {
@@ -45,16 +46,16 @@ export default () => {
     {
       label: '新旧车',
       modelName: `fundSourceB`,
-      domConfig:{
+      domConfig: {
         type: 'select',
-        selectLists:[
+        selectLists: [
           { value: '1', name: '新车' },
-          { value: '0', name: '二手车'}
+          { value: '0', name: '二手车' }
         ],
-        domProps:{
+        domProps: {
           placeholder: '请选择新旧车',
         }
-      }      
+      }
     },
     {
       label: '手机号',
@@ -85,27 +86,27 @@ export default () => {
           columns={columns}
           dataSource={
             [
-              {id:1,name:'xxx',address:'place'},
-              {id:2,name:'sss',address:'places'},
-              {id:3,name:'sss',address:'places'},
-              {id:4,name:'sss',address:'places'},
-              {id:5,name:'sss',address:'places'},
-              {id:6,name:'sss',address:'places'},
-              {id:7,name:'sss',address:'places'},
-              {id:8,name:'sss',address:'places'},
-              {id:9,name:'sss',address:'places'},
-              {id:10,name:'sss',address:'places'},
-              {id:11,name:'sss',address:'places'},
-              {id:12,name:'sss',address:'places'},
-              {id:13,name:'sss',address:'places'},
-              {id:14,name:'sss',address:'places'},
-              {id:15,name:'sss',address:'places'},
-              {id:16,name:'sss',address:'places'},
-              {id:17,name:'sss',address:'places'},
-              {id:18,name:'sss',address:'places'},
-              {id:19,name:'sss',address:'places'},
-              {id:20,name:'sss',address:'places'},
-              {id:21,name:'sss',address:'places'},
+              { id: 1, name: 'xxx', address: 'place' },
+              { id: 2, name: 'sss', address: 'places' },
+              { id: 3, name: 'sss', address: 'places' },
+              { id: 4, name: 'sss', address: 'places' },
+              { id: 5, name: 'sss', address: 'places' },
+              { id: 6, name: 'sss', address: 'places' },
+              { id: 7, name: 'sss', address: 'places' },
+              { id: 8, name: 'sss', address: 'places' },
+              { id: 9, name: 'sss', address: 'places' },
+              { id: 10, name: 'sss', address: 'places' },
+              { id: 11, name: 'sss', address: 'places' },
+              { id: 12, name: 'sss', address: 'places' },
+              { id: 13, name: 'sss', address: 'places' },
+              { id: 14, name: 'sss', address: 'places' },
+              { id: 15, name: 'sss', address: 'places' },
+              { id: 16, name: 'sss', address: 'places' },
+              { id: 17, name: 'sss', address: 'places' },
+              { id: 18, name: 'sss', address: 'places' },
+              { id: 19, name: 'sss', address: 'places' },
+              { id: 20, name: 'sss', address: 'places' },
+              { id: 21, name: 'sss', address: 'places' },
             ]
           }
         />
@@ -121,6 +122,18 @@ export default () => {
         <Son1 />
         <Son2 />
       </Father>
+      <div>
+        <label>三、</label><span>asyncSelect</span>
+        <AsyncDataSelect
+          dataSourceApi="/pay/api/configure/channel"
+          responseAdaptor={({ data }) => {
+            return data.map(item => ({
+              label: item.chanelName,
+              value: item.code
+            }));
+          }}
+        />
+      </div>
     </div>
   );
 }
