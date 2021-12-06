@@ -19,5 +19,7 @@ export default defineConfig({
     { path: '/', component: '@/pages/shopList' },
     { path: '/shopDetail/:shopId', component: '@/pages/shopDetail/index' },
     { path: '/test', component: '@/pages/shopTestYeMian' },
+    { path: '/shopManageB', component: '@/pages/shopManageB' },
+    { path: '/demo', component: '@/pages/demo' },
   ],
 });

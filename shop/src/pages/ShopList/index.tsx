@@ -1,8 +1,11 @@
 import React from 'react';
 import { useRequest, request, Link } from 'umi';
+import {Father} from './father';
+import {Son1} from './sonone';
+import {Son2} from './sontwo';
 import { Table } from 'antd';
 
-export default () => {
+const  IndexPage: React.FC<any> = () => {
 
   const { data = [] } = useRequest(() => request('/api/shop/list'));
 
@@ -37,7 +40,7 @@ export default () => {
       <h1 style={{ marginBottom: 24 }}>商品列表</h1>
 
       <Table rowKey="id" columns={columns} dataSource={data} />
-      
     </div>
   );
 }
+export default IndexPage;
