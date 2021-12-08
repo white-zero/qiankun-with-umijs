@@ -103,7 +103,7 @@ const BaseSearch: React.FC<Props> = (props) => {
             break;
         }
         return (
-          <Input placeholder="请输入---" {...inputProps} {...domConfig.domProps} />
+          <Input placeholder="请输入" {...inputProps} {...domConfig.domProps} />
         );
       }
     }
