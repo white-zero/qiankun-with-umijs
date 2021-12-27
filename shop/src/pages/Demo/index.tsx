@@ -1,5 +1,6 @@
 import React from 'react';
 import { Player, Controls } from '@lottiefiles/react-lottie-player';
+import Countdown from '@/pages/Demo/components/countdown/index'
 
 
 const Demo: React.FC<any> = () => {
@@ -8,7 +9,9 @@ const Demo: React.FC<any> = () => {
 
   return (
     <div>
-      qqq
+      <h3>
+        一、react-lottie-player -----动画
+      </h3>      
       <Player
         autoplay={true}
         loop={false}
@@ -21,6 +24,10 @@ const Demo: React.FC<any> = () => {
       >
         <Controls visible={false} buttons={['play', 'repeat', 'frame', 'debug']} />
       </Player>
+      <h3>
+        二、倒计时刷新
+        <Countdown/>
+      </h3>      
     </div>
   );
 }
