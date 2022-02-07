@@ -72,7 +72,7 @@ export default () => {
       </div>
       <div style={{ border: "1px solid" }}>
         <span>
-          这里是子组件:
+          ---这里是子组件:
         </span>
         <div>
           <span>
